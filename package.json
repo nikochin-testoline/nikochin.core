@@ -1,0 +1,14 @@
+{
+  "name": "nikochin.core",
+  "version": "1.0.0",
+  "description": "Nikochin core utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nikochin"
+  ],
+  "author": "nikochin",
+  "license": "ISC"
+}
