@@ -3,7 +3,7 @@ const LocalStrategy = require('passport-local').Strategy
 const JWTStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 const globalConfig = require('@/profiles').global
-const { ObjectId } = require('alias')
+const { ObjectId } = require('../alias')
 
 module.exports = function ({
   findUsernamePassword,
