@@ -6,7 +6,7 @@ function response (callback) {
       delete result.success
       res.send(result)
     } catch (error) {
-      console.error('[Response Error]:', error)
+      // console.error('[Response Error]:', error)
       delete error.success
       res.status(500).send(error)
     }

@@ -1,20 +1,17 @@
 const mongoose = require('mongoose')
-const isString = require('lodash/isString')
+const _isArray = require('lodash/isArray')
 
 function SchemaPlugin (schema, options) {
   schema.statics.findPage = function (query, page, size, sort) {
     return this.find(query).sort(sort).skip(page * size).limit(size)
   }
 
-  schema.statics.getPage = async function (query, page = 0, size = 15, sort, mapping, populate, fields) {
+  schema.statics.getPage = async function (query, page = 0, size = 15, sort, mapping, populate) {
     size = Math.min(size, 25)
 
-    if (isString(sort)) {
-      let split = sort.split(' ')
-      sort = { [split[0]]: split[1] }
-    }
+    const find = _isArray(query) ? this.find(...query) : this.find(query)
 
-    var action = this.find(query, fields).sort(sort).skip(page * size).limit(size)
+    var action = find.sort(sort).skip(page * size).limit(size)
 
     if (populate) {
       action = populate(action)
@@ -23,7 +20,6 @@ function SchemaPlugin (schema, options) {
     const list = await action.exec()
 
     const count = await this.countDocuments(query)
-
     const totalItem = count
     const totalPage = Math.ceil(totalItem / size)
     const items = mapping ? list.map(mapping).filter(i => i != null) : list
@@ -36,11 +32,11 @@ function SchemaPlugin (schema, options) {
   }
 
   schema.statics.getById = function (...params) {
-    return this.findById(...params).lean().exec()
+    return this.findById(...params).exec()
   }
 
   schema.statics.getOne = function (...params) {
-    return this.findOne(...params).lean().exec()
+    return this.findOne(...params).exec()
   }
 
   schema.statics.get = function (...params) {

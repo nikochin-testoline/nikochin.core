@@ -7,12 +7,12 @@ const { ObjectId } = require('../alias')
 
 module.exports = function ({
   findUsernamePassword,
-  verifyPayload
+  verifyPayload,
 }) {
   const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
     secretOrKey: globalConfig.jwtSecret,
-    ignoreExpiration: true
+    ignoreExpiration: true,
   }
 
   return function initApp (app) {
@@ -33,7 +33,7 @@ module.exports = function ({
           usernameField: 'username',
           passwordField: 'password',
           passReqToCallback: true,
-          session: false
+          session: false,
         },
         async (req, username, password, done) => {
           try {
@@ -53,29 +53,30 @@ module.exports = function ({
 
     passport.use(
       'jwt',
-      new JWTStrategy({
-        ...opts,
-        passReqToCallback: true
-      },
-      async (req, payload, done) => {
-        try {
-          let success = await validateTokenPayload(payload)
+      new JWTStrategy(
+        {
+          ...opts,
+          passReqToCallback: true,
+        },
+        async (req, payload, done) => {
+          try {
+            let success = await validateTokenPayload(payload)
 
-          if (success) {
-            payload.appUserId = ObjectId(payload.appUserId)
-            payload.userDetailId = ObjectId(payload.userDetailId)
+            if (success) {
+              payload.appUserId = ObjectId(payload.appUserId)
+              payload.userDetailId = ObjectId(payload.userDetailId)
 
-            req.currentUserId = payload.userDetailId
+              req.currentUserId = payload.userDetailId
 
-            done(null, payload)
-          } else {
-            done(null, false)
+              done(null, payload)
+            } else {
+              done(null, false)
+            }
+          } catch (error) {
+            console.log('(microservices/passport/jwt) : Error occurred for JWT')
+            done(error)
           }
-        } catch (error) {
-          console.log('(microservices/passport/jwt) : Error occurred for JWT')
-          done(error)
         }
-      }
       )
     )
   }

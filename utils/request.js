@@ -5,6 +5,7 @@ const passport = require('passport')
 exports.withNode = withNode
 exports.withSession = withSession
 exports.withAuthen = withAuthen
+exports.withSocketSession = withSocketSession
 exports.withFile = middlewareFormFile(false)
 exports.withFileBody = middlewareFormFile(true)
 exports.withStreamUploader = withStreamUploader
@@ -39,6 +40,16 @@ function withAuthen (req, res, next) {
 
     return next()
   })(req, res, next)
+}
+function withSocketSession (ws, req, next) {
+  passport.authenticate('jwt', { session: false }, function (err, user, info) {
+    // TODO: should add log to see why failed
+    if (!err && user) {
+      req.user = user
+    }
+
+    return next()
+  })(req, null, next)
 }
 
 /**
@@ -78,7 +89,7 @@ function middlewareFormFile (isSameBody) {
             name: randomFileName(mime.extension(f.type)),
             extension: mime.extension(f.type),
             path: f.path,
-            file: f
+            file: f,
           }
         }
 

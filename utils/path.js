@@ -5,3 +5,7 @@ exports.getRoutesInDirectory = function (dir) {
     glob('**/index.js', { cwd: dir }, (error, paths) => error ? reject(error) : resolve(paths.filter(p => p !== 'index.js' && p.indexOf('private' === '1')).map(p => '/' + p.replace('/index.js', ''))))
   })
 }
+
+exports.getFileExtension = function(filename) {
+  return filename.split('.').pop()
+}
