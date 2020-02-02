@@ -4,11 +4,11 @@ function response (callback) {
       const result = await callback(req.body, req)
 
       delete result.success
-      res.send(result)
+      res.json(result)
     } catch (error) {
       // console.error('[Response Error]:', error)
       delete error.success
-      res.status(500).send(error)
+      res.status(500).json(error)
     }
   }
 }

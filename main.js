@@ -1,5 +1,9 @@
 require('./extensions')
 
+const expressJoi = require('express-joi-validator')
+const ServiceResult = require('./common/ServiceResult')
+const joiErrorFormat = require('./libs/joi_error_format')
+
 module.exports = function (app) {
   const stack = []
   return {
@@ -18,7 +22,17 @@ module.exports = function (app) {
       await Promise.all(ps)
       await last(app)
 
+      if (expressJoi) {
+        app.use(function (err, req, res, next) {
+          if (err.isBoom) {
+            const validations = joiErrorFormat(err)
+
+            return res.status(400).json(new ServiceResult({ validations }))
+          }
+        })
+      }
+
       return app
-    }
+    },
   }
 }

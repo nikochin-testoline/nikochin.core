@@ -6,6 +6,6 @@ exports.getRoutesInDirectory = function (dir) {
   })
 }
 
-exports.getFileExtension = function(filename) {
+exports.getFileExtension = function (filename) {
   return filename.split('.').pop()
 }

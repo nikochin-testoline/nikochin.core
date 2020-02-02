@@ -19,7 +19,7 @@ function splitPhoneNumber (value, country = 'VN') {
   const emptyValue = {
     phone: null,
     phoneCode: null,
-    phoneNumber: null
+    phoneNumber: null,
   }
 
   if (!value) return emptyValue
@@ -31,7 +31,7 @@ function splitPhoneNumber (value, country = 'VN') {
   return {
     phone: p.nationalNumber,
     phoneCode: p.countryCallingCode,
-    phoneNumber: p.number
+    phoneNumber: p.number,
   }
 
   // if (value[0] === '+') value = value.substr(1)
