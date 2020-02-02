@@ -29,7 +29,7 @@ class ErrorItem {
   get baseData () {
     return {
       name: this.fieldName,
-      message: this.message,
+      message: this.e.message,
     }
   }
 
