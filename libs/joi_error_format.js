@@ -15,6 +15,8 @@ class ErrorItem {
         return this.stringMin()
       case 'string.max':
         return this.stringMax()
+      case 'string.regex.base':
+        return this.stringRegex()
       default:
         console.error(this.e)
         return {
@@ -24,20 +26,27 @@ class ErrorItem {
     }
   }
 
+  get baseData () {
+    return {
+      name: this.fieldName,
+      message: this.message,
+    }
+  }
+
   get fieldName () {
     return this.e.path.replace('body.', '').replace('query.', '').replace('params.', '')
   }
 
   required () {
     return {
-      name: this.fieldName,
+      ...this.baseData,
       type: 'required',
     }
   }
 
   stringMin () {
     return {
-      name: this.fieldName,
+      ...this.baseData,
       type: 'string.min',
       value: this.e.context.limit,
     }
@@ -45,9 +54,16 @@ class ErrorItem {
 
   stringMax () {
     return {
-      name: this.fieldName,
+      ...this.baseData,
       type: 'string.max',
       value: this.e.context.limit,
+    }
+  }
+
+  stringRegex () {
+    return {
+      ...this.baseData,
+      type: 'string.regex',
     }
   }
 }
