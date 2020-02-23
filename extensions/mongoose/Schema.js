@@ -17,7 +17,7 @@ function SchemaPlugin (schema, options) {
       action = populate(action)
     }
 
-    const list = await action.exec()
+    const list = await action.lean().exec()
 
     const count = await this.countDocuments(query)
     const totalItem = count
@@ -32,23 +32,23 @@ function SchemaPlugin (schema, options) {
   }
 
   schema.statics.getById = function (...params) {
-    return this.findById(...params).exec()
+    return this.findById(...params).lean().exec()
   }
 
   schema.statics.getOne = function (...params) {
-    return this.findOne(...params).exec()
+    return this.findOne(...params).lean().exec()
   }
 
   schema.statics.get = function (...params) {
-    return this.get(...params).exec()
+    return this.find(...params).lean().exec()
   }
 
   schema.statics.idExist = function (id) {
-    return this.findById(id, '_id').exec().then(found => found != null)
+    return this.findById(id, '_id').lean().exec().then(found => found != null)
   }
 
   schema.statics.checkExist = function (query) {
-    return this.findOne(query, '_id').exec().then(found => found != null)
+    return this.findOne(query, '_id').lean().exec().then(found => found != null)
   }
 
   schema.statics.updateEntity = function (entity) {
