@@ -1,10 +1,12 @@
 const libphone = require('libphonenumber-js')
+const he = require('he')
 
 exports.splitPhoneNumber = splitPhoneNumber
 exports.textPlaceholder = textPlaceholder
 exports.formatUserDetailName = formatUserDetailName
 exports.formatUserDisplayName = formatUserDisplayName
 exports.formatUserFullName = formatUserFullName
+exports.getTextFromHTML = getTextFromHTML
 
 function textPlaceholder (format) {
   if (!format) return ''
@@ -56,4 +58,8 @@ function formatUserFullName (userDetail) {
 
 function formatUserDetailName (userDetail, field) {
   return textPlaceholder(userDetail[field], userDetail.firstName, userDetail.lastName)
+}
+
+function getTextFromHTML (text) {
+  return he.decode(text.replace(/<[^>]+>/g, ''))
 }

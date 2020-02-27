@@ -6,7 +6,10 @@ function response (callback) {
       delete result.success
       res.json(result)
     } catch (error) {
-      // console.error('[Response Error]:', error)
+      const env = process.env.NODE_ENV || 'dev'
+
+      if (env == 'dev') console.error('[Response Error]:', error)
+
       delete error.success
       res.status(500).json(error)
     }
