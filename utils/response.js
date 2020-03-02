@@ -11,7 +11,8 @@ function response (callback) {
       if (env == 'dev') console.error('[Response Error]:', error)
 
       delete error.success
-      res.status(500).json(error)
+
+      res.status(error.httpCode || 500).json(error)
     }
   }
 }
