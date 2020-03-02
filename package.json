@@ -1,6 +1,6 @@
 {
   "name": "nikochin.core",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Nikochin core utilities",
   "main": "index.js",
   "scripts": {
