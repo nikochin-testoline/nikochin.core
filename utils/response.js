@@ -7,13 +7,14 @@ function response (callback) {
       res.json(result)
     } catch (error) {
       const env = process.env.NODE_ENV || 'dev'
+      const statusCode = error.httpCode || 500
 
       if (env == 'dev') console.error('[Response Error]:', error)
 
       delete error.success
       delete error.httpCode
 
-      res.status(error.httpCode || 500).json(error)
+      res.status(statusCode).json(error)
     }
   }
 }
